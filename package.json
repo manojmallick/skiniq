@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Personalised Skin Intelligence + Commerce Engine powered by Perfect Corp AI",
+  "license": "MIT",
   "scripts": {
     "dev": "concurrently \"vite --port 5173\" \"node dev-server.js\"",
     "dev:frontend": "vite --port 5173",
