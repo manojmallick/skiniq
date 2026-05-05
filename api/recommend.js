@@ -126,7 +126,7 @@ module.exports = async function handler(req, res) {
           const q = encodeURIComponent(term);
           // Wait briefly to avoid hammering the API if there are many recs
           await new Promise(r => setTimeout(r, 100));
-          const response = await fetch(`https://world.openbeautyfacts.org/api/v1/search?search_terms=${q}&json=true`);
+          const response = await fetch(`https://world.openbeautyfacts.org/cgi/search.pl?search_terms=${q}&search_simple=1&action=process&json=1`);
           const data = await response.json();
           const validProduct = data.products?.find(p => p.product_name && p.image_url);
           if (validProduct) {

@@ -1,5 +1,5 @@
 // src/App.jsx — Main state machine: upload → loading → analysis → simulation
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useLanguage } from './i18n/LanguageContext.jsx';
 import { analyseSkin, getRecommendations } from './services/api.js';
 import UploadScreen from './components/UploadScreen.jsx';
@@ -36,6 +36,29 @@ export default function App() {
   const [skinAge, setSkinAge]             = useState(null);
   const [routine, setRoutine]             = useState(null);
   const [error, setError]                 = useState(null);
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  useEffect(() => {
+    if (analysisResult && (screen === SCREENS.ANALYSIS || screen === SCREENS.SIMULATION)) {
+      const skinTypeScore = analysisResult.scores?.hd_skin_type;
+      const skinType = skinTypeScore?.label || null;
+
+      const fetchTranslation = async () => {
+        setIsTranslating(true);
+        try {
+          const recResult = await getRecommendations(analysisResult.scores, analysisResult.topConcerns, skinType, locale);
+          setRecommendations(recResult.recommendations || []);
+          setSkinSummary(recResult.summary || null);
+          setRoutine(recResult.routine || null);
+        } catch (e) {
+          console.warn('Translation failed:', e);
+        } finally {
+          setIsTranslating(false);
+        }
+      };
+      fetchTranslation();
+    }
+  }, [locale]); // Trigger only when locale changes
 
   const handleImageSelected = useCallback(async (file, previewUrl) => {
     setImageUrl(previewUrl);
