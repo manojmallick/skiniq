@@ -58,25 +58,26 @@ Respond ONLY with valid JSON (no markdown, no code fences).
 IMPORTANT: You MUST write the 'summary', 'explanation', 'usageHint', and 'routine' steps in the language corresponding to this ISO locale code: ${locale}.
 However, the 'keyIngredient' and 'productType' MUST remain in English for our product search API to work.
 
+Use this EXACT JSON format (replace the ellipsis and numbers with your generated content):
 {
-  "summary": "2 sentences max. Personalised summary of their skin health. Start with a positive. Then name the key concern area. Warm, clinical tone.",
-  "skinAge": <number: estimated skin age based on firmness/wrinkles/spots scores. If scores are high, estimate younger than 30. Be encouraging but realistic.>,
+  "summary": "...",
+  "skinAge": 28,
   "recommendations": [
     {
-      "concern": "<concern name>",
-      "concernId": "<id>",
-      "score": <score>,
-      "productType": "<product type e.g. Vitamin C Serum>",
-      "keyIngredient": "<ingredient e.g. L-Ascorbic Acid 15%>",
-      "explanation": "<one sentence why this helps>",
-      "usageHint": "<when/how to apply>",
-      "severity": "<high|medium|low>",
-      "timeOfDay": "<AM|PM|both>"
+      "concern": "...",
+      "concernId": "...",
+      "score": 45,
+      "productType": "...",
+      "keyIngredient": "...",
+      "explanation": "...",
+      "usageHint": "...",
+      "severity": "...",
+      "timeOfDay": "..."
     }
   ],
   "routine": {
-    "am": ["<step 1>", "<step 2>", "<step 3>", "<step 4>"],
-    "pm": ["<step 1>", "<step 2>", "<step 3>", "<step 4>"]
+    "am": ["...", "..."],
+    "pm": ["...", "..."]
   }
 }`;
 
