@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { getScoreClass, getScoreColor } from '../services/api';
 
 export default function HistoryModal({ history, onClose }) {
@@ -7,7 +8,7 @@ export default function HistoryModal({ history, onClose }) {
   // Show newest sessions first
   const reversedHistory = [...history].reverse();
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ background: '#fff', borderRadius: '16px', maxWidth: '500px', width: '90%', maxHeight: '80vh', overflowY: 'auto', padding: '1.5rem', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', position: 'relative' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
@@ -57,6 +58,7 @@ export default function HistoryModal({ history, onClose }) {
           })}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

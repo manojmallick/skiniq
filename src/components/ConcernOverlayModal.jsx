@@ -3,6 +3,7 @@
 // Activated by tapping any concern row in AnalysisScreen
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { getScoreColor, getScoreClass } from '../services/api.js';
 
 export default function ConcernOverlayModal({ concern, imageUrl, onClose }) {
@@ -29,7 +30,7 @@ export default function ConcernOverlayModal({ concern, imageUrl, onClose }) {
   const scoreColor = getScoreColor(concern.score);
   const qualityLabel = concern.score >= 70 ? 'Healthy' : concern.score >= 45 ? 'Moderate' : 'Needs Attention';
 
-  return (
+  return createPortal(
     <div
       className="overlay-modal-backdrop"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
@@ -119,6 +120,7 @@ export default function ConcernOverlayModal({ concern, imageUrl, onClose }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
