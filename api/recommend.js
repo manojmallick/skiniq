@@ -28,7 +28,10 @@ const CONCERN_LABELS = {
 async function generateRecommendations(scores, topConcerns, skinType, locale = 'en') {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
+  const model = genAI.getGenerativeModel({ 
+    model: GEMINI_MODEL,
+    generationConfig: { responseMimeType: "application/json" }
+  });
 
   const scoreLines = topConcerns.map(id => {
     const s = scores[id];
@@ -82,8 +85,10 @@ However, the 'keyIngredient' and 'productType' MUST remain in English for our pr
   const text = result.response.text().trim();
 
   let cleanText = text;
-  if (cleanText.startsWith('```')) {
-    cleanText = cleanText.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+  const startIdx = cleanText.indexOf('{');
+  const endIdx = cleanText.lastIndexOf('}');
+  if (startIdx !== -1 && endIdx !== -1) {
+    cleanText = cleanText.substring(startIdx, endIdx + 1);
   }
 
   return JSON.parse(cleanText);
