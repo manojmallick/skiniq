@@ -55,6 +55,11 @@ PATIENT SKIN CONTEXT:
       parts: [{ text: msg.content }]
     }));
 
+    // Gemini requires history to start with a 'user' role
+    while (history.length > 0 && history[0].role === 'model') {
+      history.shift();
+    }
+
     const chat = model.startChat({ history });
 
     const result = await chat.sendMessage(lastMessage.content);
