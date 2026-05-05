@@ -49,7 +49,7 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
               <p>{overallLabel}</p>
               {skinAge && (
                 <div className="skin-age-badge">
-                  ✨ Estimated skin age: <strong>{skinAge}</strong>
+                  ✨ {t('analysis_estimated_age') || 'Estimated skin age:'} <strong>{skinAge}</strong>
                 </div>
               )}
             </div>
@@ -74,7 +74,7 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
           {/* Tap hint if mask data is available */}
           {hasMaskData && (
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', marginBottom: '0.75rem' }}>
-              👆 Tap any concern to see the AI concern map
+              👆 {t('analysis_see_map') || 'Tap any concern to see the AI concern map'}
             </p>
           )}
 
@@ -82,7 +82,7 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
           {needsAttention.length > 0 && (
             <div className="concerns-grid" style={{ marginBottom: '1rem' }}>
               <div className="concern-section-title needs-attention">
-                ⚠ Needs attention ({needsAttention.length})
+                ⚠ {t('analysis_needs_attention') || 'Needs attention'} ({needsAttention.length})
               </div>
               {needsAttention.map((s, i) => (
                 <div
@@ -91,7 +91,7 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
                   style={{ cursor: s.maskUrl ? 'pointer' : 'default' }}
                   title={s.maskUrl ? 'Tap to see AI concern map' : ''}
                 >
-                  <SkinScoreBar concern={s.label} score={s.score} delay={i * 80} />
+                  <SkinScoreBar concern={t(s.id) || s.label} score={s.score} delay={i * 80} />
                 </div>
               ))}
             </div>
@@ -101,7 +101,7 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
           {healthy.length > 0 && (
             <div className="concerns-grid">
               <div className="concern-section-title healthy">
-                ✓ Healthy ({healthy.length})
+                ✓ {t('analysis_healthy') || 'Healthy'} ({healthy.length})
               </div>
               {healthy.map((s, i) => (
                 <div
@@ -110,7 +110,7 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
                   style={{ cursor: s.maskUrl ? 'pointer' : 'default' }}
                 >
                   <SkinScoreBar
-                    concern={s.label}
+                    concern={t(s.id) || s.label}
                     score={s.score}
                     delay={needsAttention.length * 80 + i * 60}
                     showBadge={false}

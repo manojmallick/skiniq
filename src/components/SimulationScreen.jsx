@@ -353,10 +353,10 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
             routine,
             scores: result.scores
           })} style={{ flex: 1, padding: '0.6rem 1rem', fontSize: '0.85rem' }}>
-          🖼️ Save Image
+          🖼️ {t('sim_save_image') || 'Save Image'}
         </button>
         <button className="btn btn-secondary" onClick={printReportAsPDF} style={{ flex: 1, padding: '0.6rem 1rem', fontSize: '0.85rem' }}>
-          📄 Save PDF
+          📄 {t('sim_save_pdf') || 'Save PDF'}
         </button>
       </div>
 

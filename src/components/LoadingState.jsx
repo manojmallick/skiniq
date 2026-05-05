@@ -1,21 +1,24 @@
 // src/components/LoadingState.jsx
+import { useLanguage } from '../i18n/LanguageContext.jsx';
+
 export default function LoadingState({ step = 'analysis', imageUrl }) {
+  const { t } = useLanguage();
   const steps = {
     reading: {
-      title: 'Reading your photo...',
-      sub: 'Preparing image for clinical analysis'
+      title: t('loading_reading_title') || 'Reading your photo...',
+      sub: t('loading_reading_sub') || 'Preparing image for clinical analysis'
     },
     analysis: {
-      title: 'Analysing 14 skin concerns with clinical AI...',
-      sub: 'Powered by Perfect Corp · validated by dermatologists · trained on 70,000 medical-grade images'
+      title: t('loading_analysis_title') || 'Analysing 14 skin concerns with clinical AI...',
+      sub: t('loading_analysis_sub') || 'Powered by Perfect Corp · validated by dermatologists · trained on 70,000 medical-grade images'
     },
     simulation: {
-      title: 'Simulating your skin\'s potential...',
-      sub: 'Perfect Corp AI is generating your personalised before/after result'
+      title: t('loading_sim_title') || 'Simulating your skin\'s potential...',
+      sub: t('loading_sim_sub') || 'Perfect Corp AI is generating your personalised before/after result'
     },
     recommendations: {
-      title: 'Personalising your product recommendations...',
-      sub: 'Matching ingredients to your specific skin profile'
+      title: t('loading_rec_title') || 'Personalising your product recommendations...',
+      sub: t('loading_rec_sub') || 'Matching ingredients to your specific skin profile'
     }
   };
 
