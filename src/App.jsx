@@ -162,6 +162,7 @@ export default function App() {
               skinSummary={skinSummary}
               skinAge={skinAge}
               onRetake={handleRetake}
+              isTranslating={isTranslating}
             />
           )}
         </div>

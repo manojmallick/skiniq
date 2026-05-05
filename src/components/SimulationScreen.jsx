@@ -7,6 +7,7 @@ import { downloadReportImage, printReportAsPDF } from '../utils/reportExporter.j
 
 // ── Before/After Slider ──────────────────────────────────────────────────────
 function BeforeAfterSlider({ beforeSrc, afterSrc }) {
+  const { t } = useLanguage();
   const [position, setPosition] = useState(50); // % from right clipped
   const containerRef = useRef(null);
   const isDragging = useRef(false);
@@ -88,6 +89,7 @@ function BeforeAfterSlider({ beforeSrc, afterSrc }) {
 
 // ── Product Card ─────────────────────────────────────────────────────────────
 function ProductCard({ rec, index }) {
+  const { t } = useLanguage();
   const color = getScoreColor(rec.score);
   const cls   = getScoreClass(rec.score);
 
@@ -133,6 +135,7 @@ function ProductCard({ rec, index }) {
 
 // ── AM/PM Routine Card ────────────────────────────────────────────────────────
 function RoutineCard({ routine }) {
+  const { t } = useLanguage();
   if (!routine) return null;
   return (
     <div className="card" style={{ marginBottom: '1rem' }}>
@@ -179,7 +182,7 @@ function RoutineCard({ routine }) {
 }
 
 // ── Main SimulationScreen ─────────────────────────────────────────────────────
-export default function SimulationScreen({ result, imageUrl, recommendations, routine, skinSummary, skinAge, onRetake }) {
+export default function SimulationScreen({ result, imageUrl, recommendations, routine, skinSummary, skinAge, onRetake, isTranslating }) {
   const { t } = useLanguage();
   const { healedImage, topConcerns, scores, meta } = result;
 
@@ -287,6 +290,19 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
           )}
         </div>
       </div>
+
+      {/* Loader for Recommendations if still fetching */}
+      {(!recommendations || recommendations.length === 0 || isTranslating) && (
+        <div style={{ textAlign: 'center', padding: '2rem 1rem', background: '#f8fdfa', borderRadius: '12px', marginBottom: '1rem', border: '1px solid rgba(45,106,79,0.1)' }}>
+          <div style={{ display: 'inline-block', width: '30px', height: '30px', border: '3px solid rgba(45,106,79,0.2)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 1s linear infinite', marginBottom: '1rem' }} />
+          <div style={{ fontWeight: 600, color: 'var(--primary)', fontSize: '0.9rem' }}>
+            {isTranslating ? 'Translating recommendations...' : 'Curating your personalised products...'}
+          </div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+            This takes a few seconds to fetch real products.
+          </div>
+        </div>
+      )}
 
       {/* Product Recommendations */}
       {recommendations && recommendations.length > 0 && (
