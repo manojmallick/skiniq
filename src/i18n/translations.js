@@ -1,6 +1,7 @@
 export const translations = {
   en: {
     name: "English",
+    upload_tagline: "⚡ Perfect Corp Clinical AI",
     upload_title: "Your skin.<br />Analysed. Healed. Shopped.",
     upload_sub: "Upload a selfie — get a clinical-grade analysis of 14 skin concerns in 30 seconds. See your skin healed. Find the products to get there.",
     upload_zone_title: "Upload your selfie",
@@ -71,6 +72,7 @@ export const translations = {
   },
   nl: {
     name: "Nederlands",
+    upload_tagline: "⚡ Perfect Corp Klinische AI",
     upload_title: "Jouw huid.<br />Geanalyseerd. Genezen. Gewinkeld.",
     upload_sub: "Upload een selfie — krijg een klinische analyse van 14 huidproblemen in 30 seconden. Zie je huid genezen. Vind de producten om daar te komen.",
     upload_zone_title: "Upload je selfie",
@@ -141,6 +143,7 @@ export const translations = {
   },
   fr: {
     name: "Français",
+    upload_tagline: "⚡ Perfect Corp IA Clinique",
     upload_title: "Votre peau.<br />Analysée. Guérie. Achetée.",
     upload_sub: "Téléchargez un selfie — obtenez une analyse clinique de 14 problèmes de peau en 30 secondes. Voyez votre peau guérie. Trouvez les produits pour y parvenir.",
     upload_zone_title: "Téléchargez votre selfie",
@@ -211,6 +214,7 @@ export const translations = {
   },
   hi: {
     name: "हिन्दी",
+    upload_tagline: "⚡ Perfect Corp क्लिनिकल AI",
     upload_title: "आपकी त्वचा।<br />विश्लेषण किया गया। ठीक किया गया। खरीदा गया।",
     upload_sub: "एक सेल्फी अपलोड करें - 30 सेकंड में 14 त्वचा की समस्याओं का नैदानिक-ग्रेड विश्लेषण प्राप्त करें। अपनी त्वचा को ठीक होते हुए देखें। वहाँ पहुँचने के लिए उत्पाद खोजें।",
     upload_zone_title: "अपनी सेल्फी अपलोड करें",

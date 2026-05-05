@@ -106,7 +106,7 @@ export default function App() {
       setError(err.message || 'Analysis failed. Please try with a clearer photo in good lighting.');
       setScreen(SCREENS.UPLOAD);
     }
-  }, []);
+  }, [locale]);
 
   const handleContinueToSimulation = useCallback(() => {
     setScreen(SCREENS.SIMULATION);
