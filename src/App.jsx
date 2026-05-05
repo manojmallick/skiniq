@@ -31,6 +31,20 @@ export default function App() {
       setAnalysisResult(result);
       setScreen(SCREENS.ANALYSIS);
 
+      // Save history
+      try {
+        const history = JSON.parse(localStorage.getItem('skiniq_history') || '[]');
+        history.push({ 
+          date: new Date().toISOString(), 
+          overallScore: result.overallScore,
+          scores: result.scores 
+        });
+        if (history.length > 20) history.shift();
+        localStorage.setItem('skiniq_history', JSON.stringify(history));
+      } catch (e) {
+        console.warn('Could not save history to localStorage', e);
+      }
+
       // Extract skin type label from scores
       const skinTypeScore = result.scores?.hd_skin_type;
       const skinType = skinTypeScore?.label || null;

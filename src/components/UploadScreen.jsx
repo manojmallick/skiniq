@@ -1,11 +1,59 @@
 // src/components/UploadScreen.jsx
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
+
+// ── Progress Sparkline ───────────────────────────────────────────────────────
+function ProgressSparkline({ data }) {
+  if (!data || data.length < 2) return null;
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const padding = 10;
+  const width = 150;
+  const height = 40;
+  
+  const points = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * (width - padding * 2) + padding;
+    const y = max === min ? height / 2 : height - ((d - min) / (max - min)) * (height - padding * 2) - padding;
+    return `${x},${y}`;
+  });
+
+  return (
+    <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} style={{ overflow: 'visible', margin: '0.5rem 0' }}>
+      <polyline
+        fill="none"
+        stroke="var(--primary)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        points={points.join(' ')}
+      />
+      {data.map((d, i) => {
+        const x = (i / (data.length - 1)) * (width - padding * 2) + padding;
+        const y = max === min ? height / 2 : height - ((d - min) / (max - min)) * (height - padding * 2) - padding;
+        return (
+          <circle key={i} cx={x} cy={y} r="3" fill={i === data.length - 1 ? 'var(--accent)' : 'var(--primary)'} />
+        );
+      })}
+    </svg>
+  );
+}
 
 export default function UploadScreen({ onImageSelected, error }) {
   const [preview, setPreview] = useState(null);
   const [dragOver, setDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [history, setHistory] = useState([]);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('skiniq_history') || '[]');
+      if (Array.isArray(stored)) {
+        setHistory(stored.slice(-5)); // keep last 5 for UI
+      }
+    } catch (e) {
+      console.warn('Could not read history', e);
+    }
+  }, []);
 
   const handleFile = useCallback((file) => {
     if (!file) return;
@@ -131,6 +179,34 @@ export default function UploadScreen({ onImageSelected, error }) {
           </button>
         </div>
       </div>
+
+      {history.length > 0 && (
+        <div className="card" style={{ marginBottom: '1.5rem', background: 'rgba(45,106,79,0.03)', border: '1px solid rgba(45,106,79,0.1)' }}>
+          <div className="card-body" style={{ padding: '1.25rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem' }}>Your Progress</h3>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  {history.length} analysis sessions
+                </p>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--primary)', lineHeight: 1 }}>
+                  {history[history.length - 1].overallScore}
+                </div>
+                {history.length > 1 && (
+                  <div style={{ fontSize: '0.75rem', fontWeight: 600, color: history[history.length - 1].overallScore > history[history.length - 2].overallScore ? 'var(--score-high)' : history[history.length - 1].overallScore < history[history.length - 2].overallScore ? 'var(--score-low)' : 'var(--text-muted)' }}>
+                    {history[history.length - 1].overallScore > history[history.length - 2].overallScore ? '↑ Improving' : history[history.length - 1].overallScore < history[history.length - 2].overallScore ? '↓ Declining' : '→ Stable'}
+                  </div>
+                )}
+              </div>
+            </div>
+            {history.length > 1 && (
+              <ProgressSparkline data={history.map(h => h.overallScore)} />
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="trust-badges">
         <div className="trust-badge">
