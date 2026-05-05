@@ -18,20 +18,25 @@ function MarkdownRenderer({ content, className }) {
         tableLines.push(lines[i]);
         i++;
       }
-      const rows = tableLines
-        .filter(l => !l.replace(/[|-]/g, '').trim() === '')  // keep separator rows for now
-        .map(l => l.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1).map(c => c.trim()));
-      // remove separator row (dashes only)
-      const header = rows[0];
-      const body = rows.slice(1).filter(r => !r.every(c => /^[-:]+$/.test(c)));
-      elements.push(
-        <div key={`table-${i}`} style={{ overflowX: 'auto', margin: '0.75rem 0' }}>
-          <table className="md-table">
-            <thead><tr>{header.map((h, j) => <th key={j}>{h}</th>)}</tr></thead>
-            <tbody>{body.map((row, r) => <tr key={r}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>)}</tbody>
-          </table>
-        </div>
-      );
+      // Parse each line into an array of cell strings
+      const parseRow = l => l.split('|')
+        .filter((_, idx, arr) => idx > 0 && idx < arr.length - 1)
+        .map(c => c.trim());
+      const allRows = tableLines.map(parseRow);
+      // Separator row: all cells match /^[-: ]+$/
+      const isSep = r => r.length > 0 && r.every(c => /^[-: ]+$/.test(c));
+      const header = allRows[0] || [];
+      const body = allRows.slice(1).filter(r => !isSep(r));
+      if (header.length > 0) {
+        elements.push(
+          <div key={`table-${i}`} style={{ overflowX: 'auto', margin: '0.75rem 0' }}>
+            <table className="md-table">
+              <thead><tr>{header.map((h, j) => <th key={j}>{h}</th>)}</tr></thead>
+              <tbody>{body.map((row, r) => <tr key={r}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>)}</tbody>
+            </table>
+          </div>
+        );
+      }
       continue;
     }
 
