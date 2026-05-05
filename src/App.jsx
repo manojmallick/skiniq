@@ -1,0 +1,114 @@
+// src/App.jsx — Main state machine: upload → loading → analysis → simulation
+import { useState, useCallback } from 'react';
+import { analyseSkin, getRecommendations } from './services/api.js';
+import UploadScreen from './components/UploadScreen.jsx';
+import AnalysisScreen from './components/AnalysisScreen.jsx';
+import SimulationScreen from './components/SimulationScreen.jsx';
+import LoadingState from './components/LoadingState.jsx';
+
+// Screens: 'upload' | 'loading' | 'analysis' | 'simulation'
+const SCREENS = { UPLOAD: 'upload', LOADING: 'loading', ANALYSIS: 'analysis', SIMULATION: 'simulation' };
+
+export default function App() {
+  const [screen, setScreen]               = useState(SCREENS.UPLOAD);
+  const [loadingStep, setLoadingStep]     = useState('analysis');
+  const [imageUrl, setImageUrl]           = useState(null);
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [recommendations, setRecommendations] = useState(null);
+  const [skinSummary, setSkinSummary]     = useState(null);
+  const [skinAge, setSkinAge]             = useState(null);
+  const [routine, setRoutine]             = useState(null);
+  const [error, setError]                 = useState(null);
+
+  const handleImageSelected = useCallback(async (file, previewUrl) => {
+    setImageUrl(previewUrl);
+    setError(null);
+    setScreen(SCREENS.LOADING);
+    setLoadingStep('analysis');
+
+    try {
+      const result = await analyseSkin(file);
+      setAnalysisResult(result);
+      setScreen(SCREENS.ANALYSIS);
+
+      // Extract skin type label from scores
+      const skinTypeScore = result.scores?.hd_skin_type;
+      const skinType = skinTypeScore?.label || null;
+
+      try {
+        setLoadingStep('recommendations');
+        const recResult = await getRecommendations(result.scores, result.topConcerns, skinType);
+        setRecommendations(recResult.recommendations || []);
+        setSkinSummary(recResult.summary || null);
+        setSkinAge(recResult.skinAge || null);
+        setRoutine(recResult.routine || null);
+      } catch (recErr) {
+        console.warn('Recommendations failed (non-fatal):', recErr.message);
+        setRecommendations([]);
+      }
+
+    } catch (err) {
+      console.error('Analysis error:', err);
+      setError(err.message || 'Analysis failed. Please try with a clearer photo in good lighting.');
+      setScreen(SCREENS.UPLOAD);
+    }
+  }, []);
+
+  const handleContinueToSimulation = useCallback(() => {
+    setScreen(SCREENS.SIMULATION);
+  }, []);
+
+  const handleRetake = useCallback(() => {
+    setAnalysisResult(null);
+    setRecommendations(null);
+    setSkinSummary(null);
+    setSkinAge(null);
+    setRoutine(null);
+    setImageUrl(null);
+    setError(null);
+    setScreen(SCREENS.UPLOAD);
+  }, []);
+
+  return (
+    <div className="app">
+      <header className="header">
+        <a className="header-logo" href="/" onClick={(e) => { e.preventDefault(); handleRetake(); }}>
+          <div className="header-logo-mark">🧴</div>
+          <span className="header-logo-text">SkinIQ</span>
+        </a>
+        <span className="header-badge">Perfect Corp AI</span>
+      </header>
+
+      <main className="main">
+        <div className="container">
+          {screen === SCREENS.UPLOAD && (
+            <UploadScreen onImageSelected={handleImageSelected} error={error} />
+          )}
+          {screen === SCREENS.LOADING && (
+            <LoadingState step={loadingStep} imageUrl={imageUrl} />
+          )}
+          {screen === SCREENS.ANALYSIS && analysisResult && (
+            <AnalysisScreen
+              result={analysisResult}
+              imageUrl={imageUrl}
+              skinSummary={skinSummary}
+              skinAge={skinAge}
+              onContinue={handleContinueToSimulation}
+            />
+          )}
+          {screen === SCREENS.SIMULATION && analysisResult && (
+            <SimulationScreen
+              result={analysisResult}
+              imageUrl={imageUrl}
+              recommendations={recommendations}
+              routine={routine}
+              skinSummary={skinSummary}
+              skinAge={skinAge}
+              onRetake={handleRetake}
+            />
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}
