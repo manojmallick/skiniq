@@ -1,6 +1,7 @@
 // src/components/SimulationScreen.jsx — THE CENTREPIECE
 // Before/After slider + Product recommendations
 import { useRef, useState, useEffect, useCallback } from 'react';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { getScoreColor, getScoreClass, tryVirtualMakeup } from '../services/api.js';
 import { downloadReportImage, printReportAsPDF } from '../utils/reportExporter.js';
 
@@ -79,8 +80,8 @@ function BeforeAfterSlider({ beforeSrc, afterSrc }) {
       </div>
 
       {/* Labels */}
-      <div className="slider-label-before">Before</div>
-      <div className="slider-label-after">After</div>
+      <div className="slider-label-before">{t('sim_slider_before') || 'Before'}</div>
+      <div className="slider-label-after">{t('sim_slider_after') || 'After'}</div>
     </div>
   );
 }
@@ -102,7 +103,7 @@ function ProductCard({ rec, index }) {
             <div style={{ fontWeight: 600, fontSize: '0.85rem', lineHeight: '1.2', marginTop: '0.1rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{rec.actualProduct.name}</div>
           </div>
           <a href={rec.actualProduct.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', borderRadius: '100px', whiteSpace: 'nowrap', textDecoration: 'none' }}>
-            Buy
+            {t('sim_buy') || 'Buy'}
           </a>
         </div>
       )}
@@ -137,9 +138,9 @@ function RoutineCard({ routine }) {
     <div className="card" style={{ marginBottom: '1rem' }}>
       <div className="card-header">
         <div>
-          <h3 style={{ marginBottom: '0.1rem' }}>Your Daily Routine</h3>
+          <h3 style={{ marginBottom: '0.1rem' }}>{t('sim_routine')}</h3>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-            Personalised step-by-step protocol
+            {t('sim_routine_sub')}
           </p>
         </div>
         <div style={{
@@ -154,7 +155,7 @@ function RoutineCard({ routine }) {
       <div className="card-body">
         <div className="routine-columns">
           <div className="routine-col">
-            <div className="routine-col-title">☀️ Morning</div>
+            <div className="routine-col-title">{t('sim_am')}</div>
             {(routine.am || []).map((step, i) => (
               <div key={i} className="routine-step">
                 <span className="routine-step-num">{i + 1}</span>
@@ -163,7 +164,7 @@ function RoutineCard({ routine }) {
             ))}
           </div>
           <div className="routine-col">
-            <div className="routine-col-title">🌙 Evening</div>
+            <div className="routine-col-title">{t('sim_pm')}</div>
             {(routine.pm || []).map((step, i) => (
               <div key={i} className="routine-step">
                 <span className="routine-step-num">{i + 1}</span>
@@ -179,6 +180,7 @@ function RoutineCard({ routine }) {
 
 // ── Main SimulationScreen ─────────────────────────────────────────────────────
 export default function SimulationScreen({ result, imageUrl, recommendations, routine, skinSummary, skinAge, onRetake }) {
+  const { t } = useLanguage();
   const { healedImage, topConcerns, scores, meta } = result;
 
   const [makeupImage, setMakeupImage] = useState(null);
@@ -232,9 +234,9 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
   return (
     <div className="screen-enter">
       <div className="simulation-header">
-        <h2>Your Skin Potential</h2>
+        <h2>{t('sim_header_title')}</h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-          Perfect Corp AI simulated addressing your top {topConcerns.length} concerns
+          {t('sim_header_sub')}
         </p>
       </div>
 
@@ -245,7 +247,7 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
               <BeforeAfterSlider beforeSrc={beforeSrc} afterSrc={afterSrc} />
               <div className="slider-hint">
                 <span className="slider-hint-arrow">←</span>
-                Drag to reveal your healed skin {makeupImage && '& makeup'}
+                {t('sim_slider_hint')} {makeupImage && '💄'}
                 <span className="slider-hint-arrow" style={{ animationDirection: 'reverse' }}>→</span>
               </div>
               
@@ -257,7 +259,7 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
                     disabled={isApplyingMakeup || !meta?.fileId}
                     style={{ padding: '0.4rem 1rem', fontSize: '0.85rem', borderRadius: '100px', background: 'var(--accent)', border: 'none', color: 'var(--primary)' }}
                   >
-                    {isApplyingMakeup ? '💄 Applying...' : '💄 Try Signature Red'}
+                    {isApplyingMakeup ? t('sim_btn_makeup_loading') : t('sim_btn_makeup')}
                   </button>
                   {makeupError && <div style={{ color: '#E76F51', fontSize: '0.75rem', marginTop: '0.4rem' }}>{makeupError}</div>}
                 </div>
@@ -291,9 +293,9 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
         <div className="card" style={{ marginBottom: '1rem' }}>
           <div className="card-header">
             <div>
-              <h3 style={{ marginBottom: '0.1rem' }}>Products For Your Skin Profile</h3>
+              <h3 style={{ marginBottom: '0.1rem' }}>{t('sim_shop')}</h3>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-                Personalised to your exact concern scores
+                {t('sim_shop_sub')}
               </p>
             </div>
             <div style={{
@@ -319,10 +321,10 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
       {/* Footer actions */}
       <div className="action-footer">
         <button id="retake-btn" className="btn btn-secondary" onClick={onRetake} style={{ flex: 1 }}>
-          ↩ New Analysis
+          ↩ {t('sim_btn_retake')}
         </button>
         <button id="share-btn" className="btn btn-primary" onClick={handleShare} style={{ flex: 1 }}>
-          📤 Share Results
+          📤 {t('sim_btn_share') || 'Share Results'}
         </button>
       </div>
 

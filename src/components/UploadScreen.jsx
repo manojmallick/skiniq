@@ -1,5 +1,5 @@
-// src/components/UploadScreen.jsx
 import { useRef, useState, useCallback, useEffect } from 'react';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
 
 // ── Progress Sparkline ───────────────────────────────────────────────────────
 function ProgressSparkline({ data }) {
@@ -38,6 +38,7 @@ function ProgressSparkline({ data }) {
 }
 
 export default function UploadScreen({ onImageSelected, error }) {
+  const { t } = useLanguage();
   const [preview, setPreview] = useState(null);
   const [dragOver, setDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -86,14 +87,9 @@ export default function UploadScreen({ onImageSelected, error }) {
   return (
     <div className="screen-enter">
       <div className="upload-hero">
-        <div className="upload-tagline">⚡ Perfect Corp Clinical AI</div>
-        <h1 className="upload-title">
-          Your skin.<br />Analysed. Healed. Shopped.
-        </h1>
-        <p className="upload-sub">
-          Upload a selfie — get a clinical-grade analysis of 14 skin concerns in 30 seconds.
-          See your skin healed. Find the products to get there.
-        </p>
+        <div className="upload-tagline">{t('upload_tagline') || '⚡ Perfect Corp Clinical AI'}</div>
+        <h1 className="upload-title" dangerouslySetInnerHTML={{ __html: t('upload_title') }}></h1>
+        <p className="upload-sub">{t('upload_sub')}</p>
       </div>
 
       <div className="card" style={{ marginBottom: '1rem' }}>
@@ -116,11 +112,11 @@ export default function UploadScreen({ onImageSelected, error }) {
                 id="file-input"
               />
               <span className="upload-icon">📸</span>
-              <div className="upload-zone-title">Upload your selfie</div>
+              <div className="upload-zone-title">{t('upload_zone_title')}</div>
               <div className="upload-zone-sub">
-                Tap to choose a photo · or drag &amp; drop<br />
+                {t('upload_zone_sub')}<br />
                 <span style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 500 }}>
-                  Use a clear, high-res photo (HD camera recommended)
+                  {t('upload_zone_hint')}
                 </span>
               </div>
             </div>
@@ -137,7 +133,7 @@ export default function UploadScreen({ onImageSelected, error }) {
                     if (fileInputRef.current) fileInputRef.current.value = '';
                   }}
                 >
-                  ↩ Change photo
+                  {t('upload_change_photo')}
                 </button>
               </div>
             </div>
@@ -146,15 +142,15 @@ export default function UploadScreen({ onImageSelected, error }) {
           <div className="upload-tips">
             <div className="upload-tip">
               <div className="upload-tip-icon">☀️</div>
-              <div className="upload-tip-text">Good lighting</div>
+              <div className="upload-tip-text">{t('upload_tip_lighting')}</div>
             </div>
             <div className="upload-tip">
               <div className="upload-tip-icon">😐</div>
-              <div className="upload-tip-text">Face forward, neutral</div>
+              <div className="upload-tip-text">{t('upload_tip_neutral')}</div>
             </div>
             <div className="upload-tip">
               <div className="upload-tip-icon">🚫</div>
-              <div className="upload-tip-text">No filters or makeup</div>
+              <div className="upload-tip-text">{t('upload_tip_nofilter')}</div>
             </div>
           </div>
 
@@ -175,7 +171,7 @@ export default function UploadScreen({ onImageSelected, error }) {
             disabled={!selectedFile}
             style={{ marginTop: '0.5rem' }}
           >
-            {selectedFile ? '✨ Analyse My Skin' : 'Select a photo first'}
+            {selectedFile ? t('upload_btn_analyse') : t('upload_btn_select')}
           </button>
         </div>
       </div>
@@ -185,9 +181,9 @@ export default function UploadScreen({ onImageSelected, error }) {
           <div className="card-body" style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
-                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem' }}>Your Progress</h3>
+                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem' }}>{t('progress_title')}</h3>
                 <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  {history.length} analysis sessions
+                  {history.length} {t('progress_sessions')}
                 </p>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -211,20 +207,19 @@ export default function UploadScreen({ onImageSelected, error }) {
       <div className="trust-badges">
         <div className="trust-badge">
           <div className="trust-badge-dot" />
-          GDPR Compliant
+          {t('upload_gdpr') || 'GDPR Compliant'}
         </div>
         <div className="trust-badge">
           <div className="trust-badge-dot" />
-          HIPAA Ready
+          {t('upload_hipaa') || 'HIPAA Ready'}
         </div>
         <div className="trust-badge">
           <div className="trust-badge-dot" />
-          No data stored
+          {t('upload_nodata') || 'No data stored'}
         </div>
       </div>
 
-      <div className="powered-by">
-        Powered by <span>Perfect Corp YouCam AI</span> · Clinical-grade · Dermatologist validated
+      <div className="powered-by" dangerouslySetInnerHTML={{ __html: t('upload_footer') }}>
       </div>
     </div>
   );

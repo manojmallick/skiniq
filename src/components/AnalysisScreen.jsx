@@ -1,10 +1,12 @@
 // src/components/AnalysisScreen.jsx
 import { useState } from 'react';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
 import SkinScoreBar from './SkinScoreBar.jsx';
 import ConcernOverlayModal from './ConcernOverlayModal.jsx';
 import { getOverallLabel, getScoreClass } from '../services/api.js';
 
 export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge, onContinue }) {
+  const { t } = useLanguage();
   const { overallScore, scores, overlayImage, topConcerns } = result;
   const [selectedConcern, setSelectedConcern] = useState(null);
 
@@ -29,9 +31,9 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
     <div className="screen-enter">
       <div className="card" style={{ marginBottom: '1rem' }}>
         <div className="card-header">
-          <h2 style={{ fontSize: '1.15rem' }}>Your Skin Report</h2>
+          <h2 style={{ fontSize: '1.15rem' }}>{t('analysis_title')}</h2>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            {Object.keys(scores).length} concerns analysed
+            {Object.keys(scores).length} {t('analysis_sub')}
           </span>
         </div>
         <div className="card-body">
@@ -43,7 +45,7 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
               <span className="overall-score-label">/ 100</span>
             </div>
             <div className="overall-score-text">
-              <h2>Overall Score: <span className={overallClass}>{overallScore}/100</span></h2>
+              <h2>{t('analysis_overall')}: <span className={overallClass}>{overallScore}/100</span></h2>
               <p>{overallLabel}</p>
               {skinAge && (
                 <div className="skin-age-badge">
@@ -122,13 +124,12 @@ export default function AnalysisScreen({ result, imageUrl, skinSummary, skinAge,
 
       {/* CTA to simulation */}
       <div className="cta-simulation">
-        <h3>See Your Skin Healed →</h3>
+        <h3>{t('sim_header_title')} →</h3>
         <p>
-          We've simulated addressing your top {topConcerns.length} concerns.
-          See the before/after and get personalised product recommendations.
+          {t('sim_header_sub')}
         </p>
         <button id="see-simulation-btn" className="btn-white" onClick={onContinue}>
-          ✨ See My Skin Potential
+          {t('analysis_btn')}
         </button>
       </div>
 

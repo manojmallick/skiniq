@@ -1,5 +1,6 @@
 // src/App.jsx — Main state machine: upload → loading → analysis → simulation
 import { useState, useCallback } from 'react';
+import { useLanguage } from './i18n/LanguageContext.jsx';
 import { analyseSkin, getRecommendations } from './services/api.js';
 import UploadScreen from './components/UploadScreen.jsx';
 import AnalysisScreen from './components/AnalysisScreen.jsx';
@@ -9,7 +10,23 @@ import LoadingState from './components/LoadingState.jsx';
 // Screens: 'upload' | 'loading' | 'analysis' | 'simulation'
 const SCREENS = { UPLOAD: 'upload', LOADING: 'loading', ANALYSIS: 'analysis', SIMULATION: 'simulation' };
 
+function LanguageSwitcher() {
+  const { locale, setLocale, languages } = useLanguage();
+  return (
+    <select 
+      value={locale} 
+      onChange={(e) => setLocale(e.target.value)}
+      style={{ marginLeft: '0.75rem', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--text)', outline: 'none' }}
+    >
+      {Object.keys(languages).map(key => (
+        <option key={key} value={key}>🌍 {languages[key].name}</option>
+      ))}
+    </select>
+  );
+}
+
 export default function App() {
+  const { locale } = useLanguage();
   const [screen, setScreen]               = useState(SCREENS.UPLOAD);
   const [loadingStep, setLoadingStep]     = useState('analysis');
   const [imageUrl, setImageUrl]           = useState(null);
@@ -51,7 +68,7 @@ export default function App() {
 
       try {
         setLoadingStep('recommendations');
-        const recResult = await getRecommendations(result.scores, result.topConcerns, skinType);
+        const recResult = await getRecommendations(result.scores, result.topConcerns, skinType, locale);
         setRecommendations(recResult.recommendations || []);
         setSkinSummary(recResult.summary || null);
         setSkinAge(recResult.skinAge || null);
@@ -90,7 +107,10 @@ export default function App() {
           <div className="header-logo-mark">🧴</div>
           <span className="header-logo-text">SkinIQ</span>
         </a>
-        <span className="header-badge">Perfect Corp AI</span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="header-badge">Perfect Corp AI</span>
+          <LanguageSwitcher />
+        </div>
       </header>
 
       <main className="main">

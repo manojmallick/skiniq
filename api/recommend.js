@@ -25,7 +25,7 @@ const CONCERN_LABELS = {
   hd_skin_type:   'Skin Type'
 };
 
-async function generateRecommendations(scores, topConcerns, skinType) {
+async function generateRecommendations(scores, topConcerns, skinType, locale = 'en') {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
@@ -51,7 +51,10 @@ All scores (higher = healthier): ${allScoreLines}
 Top 3 concerns needing the most attention:
 ${scoreLines}
 
-Respond ONLY with valid JSON (no markdown, no code fences):
+Respond ONLY with valid JSON (no markdown, no code fences).
+IMPORTANT: You MUST write the 'summary', 'explanation', 'usageHint', and 'routine' steps in the language corresponding to this ISO locale code: ${locale}.
+However, the 'keyIngredient' and 'productType' MUST remain in English for our product search API to work.
+
 {
   "summary": "2 sentences max. Personalised summary of their skin health. Start with a positive. Then name the key concern area. Warm, clinical tone.",
   "skinAge": <number: estimated skin age based on firmness/wrinkles/spots scores. If scores are high, estimate younger than 30. Be encouraging but realistic.>,
@@ -105,14 +108,14 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Gemini API key not configured. Add GEMINI_API_KEY to .env' });
   }
 
-  const { scores, topConcerns, skinType } = req.body;
+  const { scores, topConcerns, skinType, locale } = req.body;
 
   if (!scores || !topConcerns || !Array.isArray(topConcerns) || topConcerns.length === 0) {
     return res.status(400).json({ error: 'Missing scores or topConcerns in request body' });
   }
 
   try {
-    const result = await generateRecommendations(scores, topConcerns.slice(0, 3), skinType);
+    const result = await generateRecommendations(scores, topConcerns.slice(0, 3), skinType, locale);
 
     // Fetch real product images from Open Beauty Facts
     const recommendations = result.recommendations || [];

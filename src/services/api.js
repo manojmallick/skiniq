@@ -91,11 +91,11 @@ export async function analyseSkin(imageFile) {
  * @param {string|null} skinType — e.g. "oily", "dry", "combination"
  * @returns {Promise<{recommendations, summary, skinAge, routine}>}
  */
-export async function getRecommendations(scores, topConcerns, skinType = null) {
+export async function getRecommendations(scores, topConcerns, skinType = null, locale = 'en') {
   const response = await fetch(`${API_BASE}/recommend`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ scores, topConcerns, skinType })
+    body: JSON.stringify({ scores, topConcerns, skinType, locale })
   });
 
   if (!response.ok) {
