@@ -17,10 +17,12 @@ app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 // Import handlers (Vercel serverless function format)
 const analyseHandler = require('./api/analyse');
 const recommendHandler = require('./api/recommend');
+const chatHandler = require('./api/chat');
 
 // Mount API routes — adapt req/res to match Vercel serverless signature
 app.post('/api/analyse', (req, res) => analyseHandler(req, res));
 app.post('/api/recommend', (req, res) => recommendHandler(req, res));
+app.post('/api/chat', (req, res) => chatHandler(req, res));
 
 app.get('/health', (req, res) => {
   res.json({
