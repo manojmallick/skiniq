@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
+import HistoryModal from './HistoryModal.jsx';
 
 // ── Progress Sparkline ───────────────────────────────────────────────────────
 function ProgressSparkline({ data }) {
@@ -43,6 +44,7 @@ export default function UploadScreen({ onImageSelected, error }) {
   const [dragOver, setDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [history, setHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -200,9 +202,20 @@ export default function UploadScreen({ onImageSelected, error }) {
             {history.length > 1 && (
               <ProgressSparkline data={history.map(h => h.overallScore)} />
             )}
+            <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+              <button 
+                className="btn-white" 
+                onClick={() => setShowHistory(true)}
+                style={{ fontSize: '0.8rem', padding: '0.4rem 1rem' }}
+              >
+                {t('progress_view_details') || 'View Details'}
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      {showHistory && <HistoryModal history={history} onClose={() => setShowHistory(false)} />}
 
       <div className="trust-badges">
         <div className="trust-badge">
