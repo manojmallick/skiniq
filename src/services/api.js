@@ -164,3 +164,24 @@ export function getOverallLabel(score) {
   if (score >= 50) return 'Moderate — action recommended';
   return 'Needs targeted care';
 }
+
+/**
+ * Chat with the AI dermatologist
+ * @param {Array<{role: string, content: string}>} messages 
+ * @param {Object} skinContext 
+ * @param {string} locale 
+ */
+export async function chatWithAI(messages, skinContext, locale = 'en') {
+  const resp = await fetch(`${API_BASE}/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages, skinContext, locale })
+  });
+
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error(`Chat API error: ${err}`);
+  }
+
+  return resp.json();
+}

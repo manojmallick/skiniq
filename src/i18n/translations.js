@@ -68,7 +68,13 @@ export const translations = {
     hd_droopy_upper_eyelid: "Upper Eyelid",
     hd_droopy_lower_eyelid: "Lower Eyelid",
     hd_tear_trough: "Tear Trough",
-    hd_skin_type: "Skin Type"
+    hd_skin_type: "Skin Type",
+    chat_title: "SkinIQ Consultant",
+    chat_subtitle: "Ask about your routine, products, or lifestyle",
+    chat_greeting: "Do you have any questions about your routine, products, or skin? Ask me anything!",
+    chat_placeholder: "Ask a question...",
+    chat_send: "Send",
+    chat_error: "Sorry, I encountered an error. Please try again."
   },
   nl: {
     name: "Nederlands",
@@ -139,7 +145,13 @@ export const translations = {
     hd_droopy_upper_eyelid: "Hangend Bovenooglid",
     hd_droopy_lower_eyelid: "Hangend Onderooglid",
     hd_tear_trough: "Traangootje",
-    hd_skin_type: "Huidtype"
+    hd_skin_type: "Huidtype",
+    chat_title: "SkinIQ Consultant",
+    chat_subtitle: "Vraag over je routine, producten of levensstijl",
+    chat_greeting: "Heb je vragen over je routine, producten of huid? Vraag me alles!",
+    chat_placeholder: "Stel een vraag...",
+    chat_send: "Versturen",
+    chat_error: "Sorry, er is een fout opgetreden. Probeer het opnieuw."
   },
   fr: {
     name: "Français",
@@ -210,7 +222,13 @@ export const translations = {
     hd_droopy_upper_eyelid: "Paupière Supérieure",
     hd_droopy_lower_eyelid: "Paupière Inférieure",
     hd_tear_trough: "Vallée des Larmes",
-    hd_skin_type: "Type de Peau"
+    hd_skin_type: "Type de Peau",
+    chat_title: "Consultant SkinIQ",
+    chat_subtitle: "Posez des questions sur votre routine, vos produits ou votre mode de vie",
+    chat_greeting: "Avez-vous des questions sur votre routine, vos produits ou votre peau ? Demandez-moi n'importe quoi !",
+    chat_placeholder: "Posez une question...",
+    chat_send: "Envoyer",
+    chat_error: "Désolé, j'ai rencontré une erreur. Veuillez réessayer."
   },
   hi: {
     name: "हिन्दी",
@@ -281,6 +299,12 @@ export const translations = {
     hd_droopy_upper_eyelid: "ऊपरी पलक",
     hd_droopy_lower_eyelid: "निचली पलक",
     hd_tear_trough: "आंसू गर्त",
-    hd_skin_type: "त्वचा का प्रकार"
+    hd_skin_type: "त्वचा का प्रकार",
+    chat_title: "SkinIQ सलाहकार",
+    chat_subtitle: "अपनी दिनचर्या, उत्पादों या जीवन शैली के बारे में पूछें",
+    chat_greeting: "क्या आपके पास अपनी दिनचर्या, उत्पादों या त्वचा के बारे में कोई प्रश्न हैं? मुझसे कुछ भी पूछें!",
+    chat_placeholder: "एक प्रश्न पूछें...",
+    chat_send: "भेजें",
+    chat_error: "क्षमा करें, मुझे एक त्रुटि का सामना करना पड़ा। कृपया पुनः प्रयास करें।"
   }
 };

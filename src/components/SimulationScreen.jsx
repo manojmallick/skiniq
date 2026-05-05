@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { getScoreColor, getScoreClass, tryVirtualMakeup } from '../services/api.js';
 import { downloadReportImage, printReportAsPDF } from '../utils/reportExporter.js';
+import ChatAssistant from './ChatAssistant.jsx';
 
 // ── Before/After Slider ──────────────────────────────────────────────────────
 function BeforeAfterSlider({ beforeSrc, afterSrc }) {
@@ -333,6 +334,16 @@ export default function SimulationScreen({ result, imageUrl, recommendations, ro
 
       {/* AM/PM Routine */}
       <RoutineCard routine={routine} />
+
+      {/* AI Chat Assistant */}
+      <ChatAssistant 
+        skinContext={{
+          overallScore: result.overallScore,
+          skinAge,
+          topConcerns: result.topConcerns,
+          routine
+        }} 
+      />
 
       {/* Footer actions */}
       <div className="action-footer">
