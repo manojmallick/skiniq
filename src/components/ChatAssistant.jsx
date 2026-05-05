@@ -2,6 +2,94 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext.jsx';
 import { chatWithAI } from '../services/api.js';
 
+// Lightweight Markdown renderer — no external deps
+function MarkdownRenderer({ content, className }) {
+  const lines = content.split('\n');
+  const elements = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Table detection (starts with |)
+    if (line.trim().startsWith('|')) {
+      const tableLines = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        tableLines.push(lines[i]);
+        i++;
+      }
+      const rows = tableLines
+        .filter(l => !l.replace(/[|-]/g, '').trim() === '')  // keep separator rows for now
+        .map(l => l.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1).map(c => c.trim()));
+      // remove separator row (dashes only)
+      const header = rows[0];
+      const body = rows.slice(1).filter(r => !r.every(c => /^[-:]+$/.test(c)));
+      elements.push(
+        <div key={`table-${i}`} style={{ overflowX: 'auto', margin: '0.75rem 0' }}>
+          <table className="md-table">
+            <thead><tr>{header.map((h, j) => <th key={j}>{h}</th>)}</tr></thead>
+            <tbody>{body.map((row, r) => <tr key={r}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>)}</tbody>
+          </table>
+        </div>
+      );
+      continue;
+    }
+
+    // Headers
+    if (line.startsWith('### ')) { elements.push(<h4 key={i} style={{margin:'0.5rem 0 0.25rem'}}>{renderInline(line.slice(4))}</h4>); i++; continue; }
+    if (line.startsWith('## '))  { elements.push(<h3 key={i} style={{margin:'0.5rem 0 0.25rem'}}>{renderInline(line.slice(3))}</h3>); i++; continue; }
+    if (line.startsWith('# '))   { elements.push(<h2 key={i} style={{margin:'0.5rem 0 0.25rem'}}>{renderInline(line.slice(2))}</h2>); i++; continue; }
+
+    // Unordered list
+    if (/^[*-] /.test(line.trim())) {
+      const listItems = [];
+      while (i < lines.length && /^[*-] /.test(lines[i].trim())) {
+        listItems.push(<li key={i}>{renderInline(lines[i].trim().slice(2))}</li>);
+        i++;
+      }
+      elements.push(<ul key={`ul-${i}`} style={{margin:'0.4rem 0',paddingLeft:'1.5rem'}}>{listItems}</ul>);
+      continue;
+    }
+
+    // Ordered list
+    if (/^\d+\. /.test(line.trim())) {
+      const listItems = [];
+      while (i < lines.length && /^\d+\. /.test(lines[i].trim())) {
+        listItems.push(<li key={i}>{renderInline(lines[i].trim().replace(/^\d+\. /,''))}</li>);
+        i++;
+      }
+      elements.push(<ol key={`ol-${i}`} style={{margin:'0.4rem 0',paddingLeft:'1.5rem'}}>{listItems}</ol>);
+      continue;
+    }
+
+    // Blank line
+    if (!line.trim()) { elements.push(<br key={i} />); i++; continue; }
+
+    // Paragraph
+    elements.push(<p key={i} style={{margin:'0 0 0.5rem'}}>{renderInline(line)}</p>);
+    i++;
+  }
+
+  return <div className={className}>{elements}</div>;
+}
+
+function renderInline(text) {
+  // Bold + italic patterns
+  const parts = [];
+  const regex = /(\*\*\*(.*?)\*\*\*)|(\*\*(.*?)\*\*)|(\*(.*?)\*)|(`(.*?)`)/g;
+  let last = 0, m;
+  while ((m = regex.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    if (m[1]) parts.push(<strong key={m.index}><em>{m[2]}</em></strong>);
+    else if (m[3]) parts.push(<strong key={m.index}>{m[4]}</strong>);
+    else if (m[5]) parts.push(<em key={m.index}>{m[6]}</em>);
+    else if (m[7]) parts.push(<code key={m.index} style={{background:'rgba(0,0,0,0.08)',borderRadius:'3px',padding:'0 3px',fontSize:'0.85em'}}>{m[8]}</code>);
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts.length ? parts : text;
+}
+
 export default function ChatAssistant({ skinContext }) {
   const { t, locale } = useLanguage();
   const [messages, setMessages] = useState([
@@ -67,12 +155,7 @@ export default function ChatAssistant({ skinContext }) {
             fontSize: '0.9rem',
             lineHeight: '1.4'
           }}>
-            {msg.content.split('\n').map((line, idx) => (
-              <span key={idx}>
-                {line.replace(/\*\*(.*?)\*\*/g, '$1')}
-                {idx !== msg.content.split('\n').length - 1 && <br />}
-              </span>
-            ))}
+            <MarkdownRenderer content={msg.content} className="chat-markdown" />
           </div>
         ))}
         {isLoading && (

@@ -600,6 +600,63 @@ p  { color: var(--text-muted); line-height: 1.7; }
   .upload-tips { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
 }
 
+/* ── Chat Markdown Styles ── */
+.chat-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+}
+.chat-markdown th, .chat-markdown td {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+  text-align: left;
+}
+.chat-markdown th {
+  background: var(--bg);
+  font-weight: 600;
+}
+.chat-markdown p {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+.chat-markdown p:last-child {
+  margin-bottom: 0;
+}
+.chat-markdown ul, .chat-markdown ol {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+}
+.chat-markdown li {
+  margin-bottom: 0.25rem;
+}
+.md-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.md-table th, .md-table td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+.md-table th {
+  background: var(--bg);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+.md-table tr:nth-child(even) td {
+  background: var(--bg-subtle);
+}
+
 /* ── Skin Age Badge ── */
 .skin-age-badge {
   display: inline-flex;
