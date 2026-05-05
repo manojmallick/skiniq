@@ -32,7 +32,11 @@ export const translations = {
     sim_buy: "Buy",
     sim_btn_retake: "Start Over",
     progress_title: "Your Progress",
-    progress_sessions: "analysis sessions"
+    progress_sessions: "analysis sessions",
+    progress_view_details: "View Details",
+    upload_gdpr: "GDPR Compliant",
+    upload_hipaa: "HIPAA Ready",
+    upload_nodata: "No data stored"
   },
   nl: {
     name: "Nederlands",
@@ -67,7 +71,11 @@ export const translations = {
     sim_buy: "Koop",
     sim_btn_retake: "Opnieuw Beginnen",
     progress_title: "Jouw Voortgang",
-    progress_sessions: "analyse sessies"
+    progress_sessions: "analyse sessies",
+    progress_view_details: "Bekijk Details",
+    upload_gdpr: "GDPR Conform",
+    upload_hipaa: "HIPAA Gereed",
+    upload_nodata: "Geen data opgeslagen"
   },
   fr: {
     name: "Français",
@@ -102,7 +110,11 @@ export const translations = {
     sim_buy: "Acheter",
     sim_btn_retake: "Recommencer",
     progress_title: "Votre Progression",
-    progress_sessions: "sessions d'analyse"
+    progress_sessions: "sessions d'analyse",
+    progress_view_details: "Voir les Détails",
+    upload_gdpr: "Conforme au RGPD",
+    upload_hipaa: "Prêt pour HIPAA",
+    upload_nodata: "Aucune donnée stockée"
   },
   hi: {
     name: "हिन्दी",
@@ -137,6 +149,10 @@ export const translations = {
     sim_buy: "खरीदें",
     sim_btn_retake: "फिर से शुरू करें",
     progress_title: "आपकी प्रगति",
-    progress_sessions: "विश्लेषण सत्र"
+    progress_sessions: "विश्लेषण सत्र",
+    progress_view_details: "विवरण देखें",
+    upload_gdpr: "GDPR अनुपालन",
+    upload_hipaa: "HIPAA तैयार",
+    upload_nodata: "कोई डेटा संग्रहीत नहीं"
   }
 };
