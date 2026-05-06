@@ -38,3 +38,4 @@ npm-debug.log*
 uploads/
 temp-images/
 CLAUDE.md
+.vercel
