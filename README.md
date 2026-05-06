@@ -1,6 +1,13 @@
 # SkinIQ — Personalised Skin Intelligence + Commerce
 
-> **Your skin. Analysed. Healed. Shopped. Consulted.**
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![Perfect Corp AI](https://img.shields.io/badge/AI-Perfect%20Corp-2D6A4F)](https://yce.perfectcorp.com)
+[![Gemini 2.0](https://img.shields.io/badge/LLM-Gemini%202.0-blue)](https://aistudio.google.com)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black)](https://vercel.com)
+
+> **[🚀 LIVE DEMO](https://skiniq-ai.vercel.app)** · **[📺 DEMO VIDEO](https://github.com/manojmallick/skiniq)**
+
+**Your skin. Analysed. Healed. Shopped. Consulted.**
 
 Upload a selfie → get a clinical-grade analysis of 14 skin concerns → see what your skin could look like after treatment → get personalised product recommendations → chat with an AI dermatologist for follow-up advice. **Free. 30 seconds.**
 
