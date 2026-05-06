@@ -5,7 +5,7 @@
 [![Gemini 2.0](https://img.shields.io/badge/LLM-Gemini%202.0-blue)](https://aistudio.google.com)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-black)](https://vercel.com)
 
-> **[🚀 LIVE DEMO](https://skiniq-ai.vercel.app)** · **[📺 DEMO VIDEO](https://github.com/manojmallick/skiniq)**
+> **[🚀 LIVE DEMO](https://skiniq-tau.vercel.app/)** · **[📺 DEMO VIDEO](https://github.com/manojmallick/skiniq)**
 
 **Your skin. Analysed. Healed. Shopped. Consulted.**
 
