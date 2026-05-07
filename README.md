@@ -85,6 +85,26 @@ graph TD
 
 ---
 
+## 📸 Visual Tour
+
+### 1. High-Precision Analysis
+Clinical-grade analysis of 14 skin concerns with AI-powered heatmaps.
+![Analysis Results](docs/screenshots/analysis_results.png)
+
+### 2. Personalised Care Plan
+Gemini 2.0 generated routines and product recommendations from Open Beauty Facts.
+![Product Recommendations](docs/screenshots/product_recommendations.png)
+
+### 3. AI Concern Mapping
+Interactive heatmaps showing exactly where the AI detects skin concerns.
+![AI Concern Map](docs/screenshots/ai_concern_map.png)
+
+### 4. Branded Report Export
+Export your clinical results as a high-quality PDF or Image for professional consultation.
+![Clinical Report](docs/screenshots/clinical_report_export.png)
+
+---
+
 ## ✨ Feature Highlights
 
 ### 🔬 Analysis Screen
