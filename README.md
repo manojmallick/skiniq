@@ -174,6 +174,30 @@ Frontend: http://localhost:5173
 API server: http://localhost:3001  
 Health check: http://localhost:3001/health
 
+### Environment variables
+
+| Variable | Default in code | Meaning |
+|---|---|---|
+| `YOUCAM_API_KEY` | none (required) | Perfect Corp YouCam API key |
+| `YOUCAM_BASE_URL` | `https://yce-api-01.makeupar.com` | YouCam API host. Note `.env.example` suggests `https://yce-us.perfectcorp.com`; check the Perfect Corp docs for the right host for your account |
+| `GEMINI_API_KEY` | none (required for recommendations) | Google AI Studio key |
+| `GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model used for product recommendations (`.env.example` still shows `gemini-1.5-flash`) |
+| `PORT` | `3001` | Port of the local API server (`dev-server.js`) |
+| `NODE_ENV`, `LOG_LEVEL`, `STORE_USER_IMAGES` | | Listed in `.env.example` but **not read anywhere in the code today**. Images are not written to disk by the app (see Privacy) |
+
+### Scripts
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Vite frontend (`5173`) and local API server (`3001`) together |
+| `npm run dev:frontend` | Frontend only |
+| `npm run dev:api` | API server only (`node dev-server.js`); `npm start` does the same |
+| `npm run build` | Production build of the frontend |
+| `npm run preview` | Serve the production build locally |
+| `npm run vercel-dev` | Run frontend and serverless functions the way Vercel does (`vercel dev`) |
+
+`npm run install:brew` hard-codes a Homebrew Node path for one machine; ignore it.
+
 ### Deploy to Vercel
 
 ```bash
